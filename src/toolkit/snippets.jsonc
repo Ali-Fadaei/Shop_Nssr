@@ -1,0 +1,49 @@
+//Standard Import Snippets Specified to Improve this Project Development.
+//copy and paste all objects inside this json to vscode typescript snippets file named: typescript.json
+
+{
+  "import nest": {
+    "prefix": "impn",
+    "body": ["import * as N from '@nestjs/common';"]
+  },
+
+  "import nest typeOrm": {
+    "prefix": "impnto",
+    "body": ["import * as NTO from '@nestjs/typeorm';"]
+  },
+
+  "import typeOrm": {
+    "prefix": "impto",
+    "body": ["import * as TO from 'typeorm';"]
+  },
+
+  "import class validator": {
+    "prefix": "impcv",
+    "body": ["import * as CV from 'class-validator';"]
+  },
+
+  "import toolkit": {
+    "prefix": "impt",
+    "body": ["import T from 'src/toolkit/toolkit';"]
+  },
+
+  "import routes": {
+    "prefix": "impr",
+    "body": ["import R from 'src/routes';"]
+  },
+
+  "import Passports": {
+    "prefix": "impg",
+    "body": ["import G from 'src/guards/guards';"]
+  },
+
+  "import Interceptors": {
+    "prefix": "impi",
+    "body": ["import I from 'src/interceptors/interceptors';"]
+  },
+
+  "import Param Decorator": {
+    "prefix": "impd",
+    "body": ["import D from 'src/decorators/decorators';"]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "driver": "PostgreSQL",
+      "name": "shop-api",
+      "connectString": "postgresql://root:lRonfAjO3JKFf1DwH5epBSZK@may.iran.liara.ir:34863/shop"
+    }
+  ]
+}
