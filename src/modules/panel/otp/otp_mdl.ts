@@ -33,71 +33,37 @@ export class PanelOtp {
 
   @TO.UpdateDateColumn()
   edited?: Date;
+
+  static toGenerateDto(init: PanelOtp) {
+    return {
+      id: init.id!,
+      expireTime: init.expireTime,
+    };
+  }
+
+  static toConfirmDto(init: PanelOtp) {
+    return {
+      id: init.id!,
+    };
+  }
 }
 
 export class PanelOtpGeneratePD {
   //
-  constructor(init: PanelOtpGeneratePD) {
-    Object.assign(this, init);
-  }
-
   @CV.IsMobilePhone('fa-IR')
   mobileNumber: string;
 }
 
-export class PanelOtpGenerateDTO {
-  //
-  constructor(init: PanelOtpGenerateDTO) {
-    Object.assign(this, init);
-  }
-
-  id: string;
-
-  expireTime: number;
-
-  static fromEntity(init: PanelOtp) {
-    return new PanelOtpGenerateDTO({
-      id: init.id!,
-      expireTime: init.expireTime,
-    });
-  }
-}
-
 export class PanelOtpConfirmPD {
   //
-  constructor(init: PanelOtpConfirmPD) {
-    Object.assign(this, init);
-  }
-
   @CV.IsUUID()
   id: string;
 
   @CV.IsNumber()
   code: number;
 }
-
-export class PanelOtpConfirmDTO {
-  //
-  constructor(init: PanelOtpConfirmDTO) {
-    Object.assign(this, init);
-  }
-
-  @CV.IsUUID()
-  id: string;
-
-  static fromEntity(init: PanelOtp) {
-    return new PanelOtpConfirmDTO({
-      id: init.id!,
-    });
-  }
-}
-
 export class PanelOtpResetPasswordPD {
   //
-  constructor(init: PanelOtpResetPasswordPD) {
-    Object.assign(this, init);
-  }
-
   @CV.IsUUID()
   id: string;
 

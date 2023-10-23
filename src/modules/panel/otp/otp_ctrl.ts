@@ -1,30 +1,27 @@
 import * as N from '@nestjs/common';
 
-import R from 'src/routes';
 import { PanelOtpConfirmPD, PanelOtpGeneratePD } from './otp_mdl';
 import { PanelOtpService } from './otp_srv';
 import * as M from './otp_mdl';
 
-@N.Controller()
+@N.Controller('panel/otp')
 export class PanelOtpController {
   //
   constructor(private panelOtpService: PanelOtpService) {}
 
-  @N.Post(R.panel.otp.generate)
+  @N.Post('/generate')
   async generateOtp(@N.Body() pd: PanelOtpGeneratePD) {
-    return M.PanelOtpGenerateDTO.fromEntity(
+    return M.PanelOtp.toGenerateDto(
       await this.panelOtpService.generate(pd.mobileNumber),
     );
   }
 
-  @N.Post(R.panel.otp.confirm)
+  @N.Post('/confirm')
   async confirmOtp(@N.Body() pd: PanelOtpConfirmPD) {
-    return M.PanelOtpConfirmDTO.fromEntity(
-      await this.panelOtpService.confirm(pd),
-    );
+    return M.PanelOtp.toConfirmDto(await this.panelOtpService.confirm(pd));
   }
 
-  @N.Post(R.panel.otp.resetPassword)
+  @N.Post('/reset')
   async resetPassword(@N.Body() pd: M.PanelOtpResetPasswordPD) {
     return await this.panelOtpService.changePassword(pd);
   }

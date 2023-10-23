@@ -10,14 +10,14 @@ export class UserService {
   //
   constructor(@NTO.InjectRepository(User) private repo: TO.Repository<User>) {}
 
-  async isUserExist(user: User): Promise<boolean> {
+  async exist(user: User): Promise<boolean> {
     return await this.repo.exist({
       where: [{ email: user.email }, { mobileNumber: user.mobileNumber }],
     });
   }
 
   async create(user: User): Promise<User> {
-    if (await this.isUserExist(user))
+    if (await this.exist(user))
       throw new T.Exceptions.BadRequest({ message: 'کاربر تکراری است' });
     user.password = await T.Crypto.hashPassword(user.password);
     return await this.repo.save(this.repo.create(user));

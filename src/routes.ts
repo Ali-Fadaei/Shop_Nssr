@@ -3,25 +3,25 @@ const routes = {
   //   user: 'common/user',
   // },
   panel: {
-    otp: {
-      generate: 'panel/otp/generate',
-      confirm: 'panel/otp/confirm',
-      resetPassword: 'panel/otp/resetPassword',
-    },
-    auth: {
-      signIn: 'panel/auth/signIn',
-      refresh: 'panel/auth/refresh',
-      logOut: 'panel/auth/logOut',
-      otp: {
-        gererate: 'panel/auth/otp/generate',
-        confirm: 'panel/auth/otp/confirm',
-        changePassword: 'panel/auth/otp/changePassword',
-      },
-    },
-    user: 'panel/user',
-    dashboard: 'panel/dashboard',
-    admin: 'panel/admin',
-    zone: 'panel/zone',
+    // otp: {
+    //   generate: 'panel/otp/generate',
+    //   confirm: 'panel/otp/confirm',
+    //   resetPassword: 'panel/otp/resetPassword',
+    // },
+    // auth: {
+    //   signIn: 'panel/auth/signIn',
+    //   refresh: 'panel/auth/refresh',
+    //   logOut: 'panel/auth/logOut',
+    //   otp: {
+    //     gererate: 'panel/auth/otp/generate',
+    //     confirm: 'panel/auth/otp/confirm',
+    //     changePassword: 'panel/auth/otp/changePassword',
+    //   },
+    // },
+    // user: 'panel/user',
+    // dashboard: 'panel/dashboard',
+    // admin: 'panel/admin',
+    // zone: 'panel/zone',
   },
   client: {
     otp: {

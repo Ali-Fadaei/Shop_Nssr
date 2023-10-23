@@ -37,9 +37,8 @@ export class PanelOtpService {
       const durationSeconds =
         durationDate.getMinutes() * 60 + durationDate.getSeconds();
       if (durationSeconds <= lastOtp.expireTime) {
-        throw new T.Exceptions.BadRequest({
-          message: 'زمان استفاده از کد قبلی تمام نشده',
-        });
+        lastOtp.expireTime = lastOtp.expireTime - durationSeconds;
+        return lastOtp;
       } else {
         await this.panelOtpRepo.remove(lastOtp);
       }

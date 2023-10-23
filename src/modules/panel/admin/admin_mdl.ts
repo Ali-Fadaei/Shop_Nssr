@@ -10,10 +10,6 @@ export enum AdminlRole {
 @TO.Entity()
 export class Admin {
   //
-  constructor(init: Admin) {
-    Object.assign(this, init);
-  }
-
   @TO.PrimaryGeneratedColumn()
   id: number;
 
@@ -52,6 +48,35 @@ export class Admin {
 
   @TO.UpdateDateColumn()
   edited?: Date;
+
+  static toDto(init: Admin) {
+    return {
+      id: init.id,
+      firstName: init.firstName,
+      lastName: init.lastName,
+      nationalCode: init.nationalCode,
+      mobileNumber: init.mobileNumber,
+      email: init.email ?? null,
+      role: init.role,
+      isActive: init.isActive,
+      isUsed: init.isUsed,
+    };
+  }
+
+  static toTokenDto(init: Admin) {
+    return {
+      id: init.id,
+      firstName: init.firstName,
+      lastName: init.lastName,
+      nationalCode: init.nationalCode,
+      mobileNumber: init.mobileNumber,
+      email: init.email ?? null,
+      role: init.role,
+      token: init.token,
+      isActive: init.isActive,
+      isUsed: init.isUsed,
+    };
+  }
 }
 
 export class AdminPD {
@@ -89,7 +114,7 @@ export class AdminPD {
   isActive: boolean;
 
   toEntity(): Admin {
-    return new Admin({
+    return {
       id: -1,
       firstName: this.firstName,
       lastName: this.lastName,
@@ -100,55 +125,12 @@ export class AdminPD {
       password: this.mobileNumber.slice(-4),
       isActive: this.isActive,
       isUsed: false,
-    });
-  }
-}
-
-export class AdminDTO {
-  //
-  constructor(init: AdminDTO) {
-    Object.assign(this, init);
-  }
-
-  id: number;
-
-  firstName: string;
-
-  lastName: string;
-
-  nationalCode: string;
-
-  mobileNumber: string;
-
-  email: string | null;
-
-  role: number;
-
-  isActive: boolean;
-
-  isUsed: boolean;
-
-  static fromEntity(init: Admin) {
-    return new AdminDTO({
-      id: init.id,
-      firstName: init.firstName,
-      lastName: init.lastName,
-      nationalCode: init.nationalCode,
-      mobileNumber: init.mobileNumber,
-      email: init.email ?? null,
-      role: init.role,
-      isActive: init.isActive,
-      isUsed: init.isUsed,
-    });
+    };
   }
 }
 
 export class AdminQP {
   //
-  constructor(init: AdminQP) {
-    Object.assign(this, init);
-  }
-
   @CV.IsInt()
   @CV.IsPositive()
   @CV.Min(0)

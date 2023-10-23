@@ -7,46 +7,34 @@ import { AdminService } from './admin_srv';
 
 @G.PanelRole(0)
 @G.UsePanelGuards()
-@N.Controller(R.panel.admin)
+@N.Controller('/panel/admin')
 export class AdminController {
   //
   constructor(private adminService: AdminService) {}
 
   @N.Get()
-  async getAdmins(@N.Query() qp: M.AdminQP): Promise<M.AdminDTO[]> {
+  async getAdmins(@N.Query() qp: M.AdminQP) {
     const admins = await this.adminService.read(qp.toFindOptions());
-    return admins.map((admin) => M.AdminDTO.fromEntity(admin));
+    return admins.map((admin) => M.Admin.toDto(admin));
   }
 
   @N.Get(':id')
-  async getAdminById(@N.Param('id') id: number): Promise<M.AdminDTO> {
-    return M.AdminDTO.fromEntity(await this.adminService.readOne(id));
+  async getAdminById(@N.Param('id') id: number) {
+    return M.Admin.toDto(await this.adminService.readOne(id));
   }
 
   @N.Post()
-  async postAdmin(@N.Body() data: M.AdminPD): Promise<M.AdminDTO> {
-    return M.AdminDTO.fromEntity(
-      await this.adminService.create(data.toEntity()),
-    );
+  async postAdmin(@N.Body() data: M.AdminPD) {
+    return M.Admin.toDto(await this.adminService.create(data.toEntity()));
   }
 
   @N.Put(':id')
-  async putAdmin(
-    @N.Param('id') id: number,
-    @N.Body() data: M.AdminPUD,
-  ): Promise<M.AdminDTO> {
-    return M.AdminDTO.fromEntity(
-      await this.adminService.update(data.toEntity(id)),
-    );
+  async putAdmin(@N.Param('id') id: number, @N.Body() data: M.AdminPUD) {
+    return M.Admin.toDto(await this.adminService.update(data.toEntity(id)));
   }
 
   @N.Delete()
   async deleteAdmin(@N.Body() body: M.AdminDD): Promise<any> {
     return await this.adminService.delete(body.ids);
-  }
-
-  @N.Patch()
-  async patch() {
-    return 'ok';
   }
 }

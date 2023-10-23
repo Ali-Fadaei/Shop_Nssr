@@ -10,7 +10,7 @@ export class AdminService {
   constructor(
     @NTO.InjectRepository(Admin) readonly repo: TO.Repository<Admin>,
   ) {
-    const superAdmin = new Admin({
+    const superAdmin: Admin = {
       id: -1,
       role: 0,
       firstName: 'super',
@@ -21,13 +21,13 @@ export class AdminService {
       email: 'ali.fadaei.424@gmail.com',
       isActive: true,
       isUsed: true,
-    });
-    this.isAdminExist(superAdmin).then((exist) => {
+    };
+    this.exist(superAdmin).then((exist) => {
       if (!exist) this.create(superAdmin);
     });
   }
 
-  async isAdminExist(admin: Partial<Admin>): Promise<boolean> {
+  async exist(admin: Partial<Admin>): Promise<boolean> {
     return await this.repo.exist({
       where: [
         { id: admin.id },
@@ -39,7 +39,7 @@ export class AdminService {
   }
 
   async create(admin: Admin): Promise<Admin> {
-    if (await this.isAdminExist(admin))
+    if (await this.exist(admin))
       throw new T.Exceptions.BadRequest({ message: 'این کاربر تکراری است' });
     admin.password = await T.Crypto.hashPassword(admin.password);
     return await this.repo.save(this.repo.create(admin));

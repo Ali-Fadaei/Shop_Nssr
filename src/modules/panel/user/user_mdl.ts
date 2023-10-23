@@ -5,10 +5,6 @@ import { randomBytes } from 'crypto';
 @TO.Entity()
 export class User {
   //
-  constructor(init: User) {
-    Object.assign(this, init);
-  }
-
   @TO.PrimaryGeneratedColumn()
   id: number;
 
@@ -55,13 +51,19 @@ export class User {
   afterDeleteLog?() {
     console.warn('id:', this.id, 'deleted!');
   }
+
+  static toDto(init: User) {
+    return {
+      id: init.id,
+      firstName: init.firstName,
+      lastName: init.lastName,
+      email: init.email ?? null,
+      mobileNumber: init.mobileNumber,
+    };
+  }
 }
 export class UserPD {
   //
-  constructor(init: UserPD) {
-    Object.assign(this, init);
-  }
-
   @CV.IsString()
   firstName: string;
 
@@ -78,50 +80,20 @@ export class UserPD {
   @CV.IsString()
   password: string;
 
-  toEntity() {
-    return new User({
+  toEntity(): User {
+    return {
       id: -1,
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,
       mobileNumber: this.mobileNumber,
       password: this.password,
-    });
-  }
-}
-
-export class UserDTO {
-  //
-  constructor(init: UserDTO) {
-    Object.assign(this, init);
-  }
-
-  id: number;
-
-  firstName: string;
-
-  lastName: string;
-
-  email: string | null;
-
-  mobileNumber: string;
-
-  static fromEntity(init: User) {
-    return new UserDTO({
-      id: init.id,
-      firstName: init.firstName,
-      lastName: init.lastName,
-      email: init.email ?? null,
-      mobileNumber: init.mobileNumber,
-    });
+    };
   }
 }
 
 export class UserQP {
   //
-  constructor(init: UserQP) {
-    Object.assign(this, init);
-  }
   @CV.IsNumber()
   @CV.IsOptional()
   start?: number;
@@ -149,10 +121,6 @@ export class UserQP {
 
 export class UserPUD {
   //
-  constructor(init: UserPUD) {
-    Object.assign(this, init);
-  }
-
   @CV.IsString()
   @CV.IsOptional()
   firstName?: string;
