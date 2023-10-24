@@ -35,7 +35,7 @@ export class Product {
   })
   description: string;
 
-  @TO.ManyToOne(() => ProductCategory, { eager: true })
+  @TO.ManyToOne(() => ProductCategory)
   @TO.JoinColumn()
   category: ProductCategory;
 
@@ -241,6 +241,7 @@ export class ProductCategoryQP {
       skip: this.start ?? 0,
       take: this.offset ?? 20,
       order: order,
+      relations: { category: true },
       where: {
         category: { id: this.categoryId },
         title: this.title ? TO.Like(`%${this.title}%`) : undefined,

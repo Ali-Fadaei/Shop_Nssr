@@ -16,5 +16,6 @@ import { UserModule } from 'src/modules/panel/user/user_mdu';
   ],
   controllers: [ClientAuthController],
   providers: [ClientAuthService, G.ClientJwtStrategy],
+  exports: [ClientAuthService],
 })
 export class ClientAuthModule {}

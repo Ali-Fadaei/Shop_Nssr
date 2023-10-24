@@ -9,7 +9,7 @@ export class PanelOtp {
   id: string;
 
   @TO.Column()
-  code: number;
+  code: string;
 
   @TO.Column()
   expireTime: number;
@@ -36,12 +36,6 @@ export class PanelOtp {
       expireTime: init.expireTime,
     };
   }
-
-  static toConfirmDto(init: PanelOtp) {
-    return {
-      id: init.id!,
-    };
-  }
 }
 
 export class PanelOtpGeneratePD {
@@ -55,8 +49,9 @@ export class PanelOtpConfirmPD {
   @CV.IsUUID()
   id: string;
 
-  @CV.IsNumber()
-  code: number;
+  @CV.IsString()
+  @CV.Length(4, 4)
+  code: string;
 }
 export class PanelOtpResetPasswordPD {
   //

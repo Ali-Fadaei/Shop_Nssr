@@ -23,6 +23,9 @@ export class User {
   address: string;
 
   @TO.Column({ nullable: true })
+  password?: string;
+
+  @TO.Column({ nullable: true })
   token?: string;
 
   @TO.Column()
@@ -68,6 +71,21 @@ export class User {
       mobileNumber: entity.mobileNumber,
       email: entity.email,
       address: entity.address,
+      isRegistered: entity.isRegistered,
+      isActive: entity.isActive,
+      isUsed: entity.isUsed,
+    };
+  }
+
+  static toTokenDto(entity: User) {
+    return {
+      id: entity.id,
+      firstName: entity.firstName,
+      lastName: entity.lastName,
+      mobileNumber: entity.mobileNumber,
+      email: entity.email,
+      address: entity.address,
+      token: entity.token,
       isRegistered: entity.isRegistered,
       isActive: entity.isActive,
       isUsed: entity.isUsed,

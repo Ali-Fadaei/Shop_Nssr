@@ -17,5 +17,5 @@ export function generateId() {
 }
 
 export function generateOtpCode() {
-  return Math.floor(Math.random() * 90000) + 10000;
+  return (Math.floor(Math.random() * 9000) + 1000).toString();
 }

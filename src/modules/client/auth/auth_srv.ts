@@ -44,6 +44,17 @@ export class ClientAuthService {
     return await this.userService.update(user);
   }
 
+  async otpSignIn(info: string): Promise<User> {
+    const [user] = await this.userService.read({
+      where: { mobileNumber: info },
+    });
+    if (user === null) throw new T.Exceptions.NotFound();
+    user.token = this.payloadToToken(
+      new ClientJwtPayload({ id: user.id, role: 1 }),
+    );
+    return await this.userService.update(user);
+  }
+
   async refreshToken(token: string) {
     const payload = this.tokenToPayload(token);
     const user = await this.userService.readOne(payload.id);
