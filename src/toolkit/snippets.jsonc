@@ -22,6 +22,11 @@
     "body": ["import * as CV from 'class-validator';"]
   },
 
+  "import class transformer": {
+    "prefix": "impcv",
+    "body": ["import * as CT from 'class-transformer';"]
+  },
+
   "import toolkit": {
     "prefix": "impt",
     "body": ["import T from 'src/toolkit/toolkit';"]

@@ -1,5 +1,6 @@
 import * as TO from 'typeorm';
 import * as CV from 'class-validator';
+import * as CT from 'class-transformer';
 import { ProductCategory } from '../product_category/product_category_mdl';
 
 @TO.Entity()
@@ -155,17 +156,15 @@ export class ProductPUD {
 
 export class ProductCategoryQP {
   //
-  @CV.IsInt()
-  @CV.IsPositive()
   @CV.Min(0)
   @CV.IsOptional()
+  @CT.Type(() => Number)
   start?: number;
 
-  @CV.IsInt()
-  @CV.IsPositive()
-  @CV.Min(10)
+  @CV.Min(1)
   @CV.Max(100)
   @CV.IsOptional()
+  @CT.Type(() => Number)
   offset?: number;
 
   @CV.IsString()
@@ -173,55 +172,66 @@ export class ProductCategoryQP {
   @CV.IsOptional()
   title?: string;
 
-  // @CV.IsNumber()
-  // @CV.Max(5)
-  // @CV.Min(0)
+  @CV.Min(0)
+  @CV.Max(5)
   @CV.IsOptional()
+  @CT.Type(() => Number)
   maxRate?: number;
 
-  // @CV.IsNumber()
-  // @CV.Max(5)
-  // @CV.Min(0)
+  @CV.Min(0)
+  @CV.Max(5)
   @CV.IsOptional()
+  @CT.Type(() => Number)
   minRate?: number;
 
-  // @CV.IsNumber()
+  @CV.IsPositive()
   @CV.IsOptional()
+  @CT.Type(() => Number)
   minPrice?: number;
 
-  // @CV.IsNumber()
+  @CV.IsPositive()
   @CV.IsOptional()
+  @CT.Type(() => Number)
   maxPrice?: number;
 
-  // @CV.MaxLength(2)
+  @CV.Min(1)
+  @CV.Max(2)
   @CV.IsOptional()
+  @CT.Type(() => Number)
   sort?: number;
 
-  // @CV.MaxLength(2)
+  @CV.Min(1)
+  @CV.Max(2)
   @CV.IsOptional()
+  @CT.Type(() => Number)
   order?: number;
 
+  @CV.IsInt()
+  @CV.IsPositive()
   @CV.IsOptional()
+  @CT.Type(() => Number)
   categoryId: number;
 
-  // @CV.IsBoolean()
   @CV.IsOptional()
+  @CT.Type(() => Boolean)
   isActive?: boolean;
 
   toFindOptions(): TO.FindManyOptions<Product> {
-    let order: TO.FindOptionsOrder<Product> =
+    const order: TO.FindOptionsOrder<Product> =
       this.sort === 1
         ? {
-            price: { direction: this.order === 1 ? 'ASC' : 'DESC' },
+            price: { direction: this.order === 1 ? 'asc' : 'desc' },
           }
-        : {
+        : this.sort === 2
+        ? {
             rating: {
-              direction: this.order === 1 ? 'ASC' : 'DESC',
+              direction: this.order === 1 ? 'asc' : 'desc',
             },
-          };
+          }
+        : {};
     return {
-      skip: this.start,
-      take: this.offset,
+      skip: this.start ?? 0,
+      take: this.offset ?? 20,
       order: order,
       where: {
         category: { id: this.categoryId },
