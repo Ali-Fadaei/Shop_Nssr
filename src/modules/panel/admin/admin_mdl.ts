@@ -1,5 +1,6 @@
 import * as TO from 'typeorm';
 import * as CV from 'class-validator';
+import * as CT from 'class-transformer';
 
 export enum AdminlRole {
   superAdmin,
@@ -49,17 +50,17 @@ export class Admin {
   @TO.UpdateDateColumn()
   edited?: Date;
 
-  static toDto(init: Admin) {
+  static toDto(entity: Admin) {
     return {
-      id: init.id,
-      firstName: init.firstName,
-      lastName: init.lastName,
-      nationalCode: init.nationalCode,
-      mobileNumber: init.mobileNumber,
-      email: init.email ?? null,
-      role: init.role,
-      isActive: init.isActive,
-      isUsed: init.isUsed,
+      id: entity.id,
+      firstName: entity.firstName,
+      lastName: entity.lastName,
+      nationalCode: entity.nationalCode,
+      mobileNumber: entity.mobileNumber,
+      email: entity.email,
+      role: entity.role,
+      isActive: entity.isActive,
+      isUsed: entity.isUsed,
     };
   }
 
@@ -70,7 +71,7 @@ export class Admin {
       lastName: init.lastName,
       nationalCode: init.nationalCode,
       mobileNumber: init.mobileNumber,
-      email: init.email ?? null,
+      email: init.email,
       role: init.role,
       token: init.token,
       isActive: init.isActive,
@@ -94,9 +95,7 @@ export class AdminPD {
   lastName: string;
 
   @CV.IsString()
-  @CV.MinLength(10)
-  @CV.MaxLength(10, { message: 'کد ملی درست نیست!' })
-  // @CV.Length(10)
+  @CV.Length(10, 10, { message: 'کد ملی درست نیست!' })
   nationalCode: string;
 
   @CV.IsMobilePhone('fa-IR')
@@ -129,24 +128,16 @@ export class AdminPD {
   }
 }
 
-export class AdminQP {
+export class AdminPUD {
   //
-  @CV.IsInt()
-  @CV.IsPositive()
-  @CV.Min(0)
-  @CV.IsOptional()
-  start?: number;
-
-  @CV.IsInt()
-  @CV.IsPositive()
-  @CV.Min(10)
-  @CV.Max(100)
-  @CV.IsOptional()
-  offset?: number;
+  constructor(init: AdminPUD) {
+    Object.assign(this, init);
+  }
 
   @CV.IsString()
   @CV.MaxLength(50)
   @CV.IsOptional()
+  @CV.IsNotEmpty()
   firstName?: string;
 
   @CV.IsString()
@@ -155,8 +146,65 @@ export class AdminQP {
   lastName?: string;
 
   @CV.IsString()
-  // @CV.MaxLength(10)
-  // @CV.MinLength(10)
+  @CV.Length(10)
+  @CV.IsOptional()
+  nationalCode?: string;
+
+  @CV.IsMobilePhone('fa-IR')
+  @CV.IsOptional()
+  mobileNumber?: string;
+
+  @CV.IsString()
+  @CV.IsEmail()
+  @CV.IsOptional()
+  email?: string;
+
+  @CV.IsEnum(AdminlRole)
+  @CV.IsOptional()
+  role?: number;
+
+  @CV.IsBoolean()
+  @CV.IsOptional()
+  isActive?: boolean;
+
+  toEntity(id: number): Partial<Admin> {
+    return {
+      id: id,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      nationalCode: this.nationalCode,
+      mobileNumber: this.mobileNumber,
+      email: this.email,
+      role: this.role,
+      isActive: this.isActive,
+    };
+  }
+}
+
+export class AdminQP {
+  //
+  @CV.Min(0)
+  @CV.IsInt()
+  @CV.IsOptional()
+  @CT.Type(() => Number)
+  start?: number;
+
+  @CV.Min(1)
+  @CV.Max(100)
+  @CV.IsInt()
+  @CV.IsOptional()
+  @CT.Type(() => Number)
+  offset?: number;
+
+  @CV.IsString()
+  @CV.IsOptional()
+  firstName?: string;
+
+  @CV.IsString()
+  @CV.IsOptional()
+  lastName?: string;
+
+  @CV.IsString()
   @CV.Length(10)
   @CV.IsOptional()
   nationalCode?: string;
@@ -190,67 +238,6 @@ export class AdminQP {
         role: this.role,
         isActive: this.isActive,
       },
-    };
-  }
-}
-
-export class AdminPUD {
-  //
-  constructor(init: AdminPUD) {
-    Object.assign(this, init);
-  }
-
-  @CV.IsString()
-  @CV.MaxLength(50)
-  @CV.IsOptional()
-  @CV.IsNotEmpty()
-  //todo: make @CV.IsNotNull
-  firstName?: string;
-
-  @CV.IsString()
-  @CV.MaxLength(50)
-  @CV.IsOptional()
-  lastName?: string;
-
-  @CV.IsString()
-  // @CV.MaxLength(10)
-  // @CV.MinLength(10)
-  @CV.Length(10)
-  @CV.IsOptional()
-  nationalCode?: string;
-
-  @CV.IsMobilePhone('fa-IR')
-  @CV.IsOptional()
-  mobileNumber?: string;
-
-  @CV.IsString()
-  @CV.IsEmail()
-  @CV.IsOptional()
-  email?: string;
-
-  @CV.IsEnum(AdminlRole)
-  @CV.IsOptional()
-  role?: number;
-
-  @CV.IsStrongPassword()
-  @CV.IsOptional()
-  password?: string;
-
-  @CV.IsBoolean()
-  @CV.IsOptional()
-  isActive?: boolean;
-
-  toEntity(id: number): Partial<Admin> {
-    return {
-      id: id,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      nationalCode: this.nationalCode,
-      mobileNumber: this.mobileNumber,
-      email: this.email,
-      role: this.role,
-      password: this.password,
-      isActive: this.isActive,
     };
   }
 }

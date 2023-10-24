@@ -19,17 +19,17 @@ export class AdminController {
   }
 
   @N.Get(':id')
-  async getAdminById(@N.Param('id') id: number) {
+  async getAdmin(@N.Param('id') id: number) {
     return M.Admin.toDto(await this.adminService.readOne(id));
   }
 
   @N.Post()
-  async postAdmin(@N.Body() data: M.AdminPD) {
+  async createAdmin(@N.Body() data: M.AdminPD) {
     return M.Admin.toDto(await this.adminService.create(data.toEntity()));
   }
 
   @N.Put(':id')
-  async putAdmin(@N.Param('id') id: number, @N.Body() data: M.AdminPUD) {
+  async editAdmin(@N.Param('id') id: number, @N.Body() data: M.AdminPUD) {
     return M.Admin.toDto(await this.adminService.update(data.toEntity(id)));
   }
 

@@ -17,12 +17,18 @@ export class UserController {
   }
 
   @N.Get(':id')
-  async getUserById(@N.Param('id') id: number) {
+  async getUser(@N.Param('id') id: number) {
     return M.User.toDto(await this.userService.readOne(id));
   }
 
+  @N.Post()
+  async createUser(@N.Body() body: M.UserPD) {
+    const user = body.toEntity();
+    return M.User.toDto(await this.userService.create(user));
+  }
+
   @N.Put(':id')
-  async putUser(@N.Param('id') id: number, @N.Body() body: M.UserPUD) {
+  async editUser(@N.Param('id') id: number, @N.Body() body: M.UserPUD) {
     const user = body.toEntity(id);
     return M.User.toDto(await this.userService.update(user));
   }

@@ -17,17 +17,17 @@ export class ProductCategoryController {
   }
 
   @N.Get(':id')
-  async getCategorybyId(@N.Param('id') id: number) {
+  async getCategory(@N.Param('id') id: number) {
     return M.ProductCategory.toDto(await this.service.readOne(id));
   }
 
   @N.Post()
-  async postCategory(@N.Body() data: M.ProductCategoryPD) {
+  async createCategory(@N.Body() data: M.ProductCategoryPD) {
     return M.ProductCategory.toDto(await this.service.create(data.toEntity()));
   }
 
   @N.Put(':id')
-  async putCategory(
+  async editCategory(
     @N.Param('id') id: number,
     @N.Body() data: M.ProductCategoryPUD,
   ) {

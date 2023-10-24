@@ -1,7 +1,6 @@
 import * as CV from 'class-validator';
 import * as TO from 'typeorm';
-import { randomBytes } from 'crypto';
-
+import * as CT from 'class-transformer';
 @TO.Entity()
 export class User {
   //
@@ -14,23 +13,32 @@ export class User {
   @TO.Column()
   lastName: string;
 
-  @TO.Column()
+  @TO.Column({ unique: true })
   mobileNumber: string;
 
-  @TO.Column({ nullable: true })
+  @TO.Column({ nullable: true, unique: true })
   email?: string;
 
   @TO.Column()
-  password: string;
+  address: string;
 
   @TO.Column({ nullable: true })
   token?: string;
 
+  @TO.Column()
+  isRegistered: boolean;
+
+  @TO.Column()
+  isActive: boolean;
+
+  @TO.Column()
+  isUsed: boolean;
+
   @TO.CreateDateColumn()
-  created?: never;
+  created?: Date;
 
   @TO.UpdateDateColumn()
-  edited?: never;
+  edited?: Date;
 
   @TO.AfterLoad()
   afterLoadLog?() {
@@ -52,13 +60,17 @@ export class User {
     console.warn('id:', this.id, 'deleted!');
   }
 
-  static toDto(init: User) {
+  static toDto(entity: User) {
     return {
-      id: init.id,
-      firstName: init.firstName,
-      lastName: init.lastName,
-      email: init.email ?? null,
-      mobileNumber: init.mobileNumber,
+      id: entity.id,
+      firstName: entity.firstName,
+      lastName: entity.lastName,
+      mobileNumber: entity.mobileNumber,
+      email: entity.email,
+      address: entity.address,
+      isRegistered: entity.isRegistered,
+      isActive: entity.isActive,
+      isUsed: entity.isUsed,
     };
   }
 }
@@ -70,15 +82,19 @@ export class UserPD {
   @CV.IsString()
   lastName: string;
 
+  @CV.IsMobilePhone('fa-IR')
+  mobileNumber: string;
+
   @CV.IsEmail()
   @CV.IsOptional()
   email?: string;
 
-  @CV.IsMobilePhone('fa-IR')
-  mobileNumber: string;
-
   @CV.IsString()
-  password: string;
+  @CV.MaxLength(100)
+  address: string;
+
+  @CV.IsBoolean()
+  isActive: boolean;
 
   toEntity(): User {
     return {
@@ -87,34 +103,10 @@ export class UserPD {
       lastName: this.lastName,
       email: this.email,
       mobileNumber: this.mobileNumber,
-      password: this.password,
-    };
-  }
-}
-
-export class UserQP {
-  //
-  @CV.IsNumber()
-  @CV.IsOptional()
-  start?: number;
-
-  @CV.IsNumber()
-  @CV.IsOptional()
-  offset?: number;
-
-  @CV.IsEmail()
-  @CV.IsOptional()
-  email?: string;
-
-  @CV.IsMobilePhone()
-  @CV.IsOptional()
-  phone_number?: string;
-
-  toFindOptions(): TO.FindManyOptions<User> {
-    return {
-      where: { email: this.email } || { mobileNumber: this.phone_number },
-      skip: this.start,
-      take: this.offset,
+      address: this.address,
+      isRegistered: true,
+      isActive: this.isActive,
+      isUsed: false,
     };
   }
 }
@@ -138,17 +130,75 @@ export class UserPUD {
   email?: string;
 
   @CV.IsString()
+  @CV.MaxLength(100)
   @CV.IsOptional()
-  password?: string;
+  address?: string;
+
+  @CV.IsBoolean()
+  @CV.IsOptional()
+  isActive?: boolean;
 
   toEntity(id: number): Partial<User> {
     return {
       id: id,
-      email: this.email,
-      mobileNumber: this.mobileNumber,
-      password: this.password,
       firstName: this.firstName,
       lastName: this.lastName,
+      mobileNumber: this.mobileNumber,
+      email: this.email,
+      address: this.address,
+      isActive: this.isActive,
+    };
+  }
+}
+
+export class UserQP {
+  //
+  @CV.Min(0)
+  @CV.IsInt()
+  @CV.IsOptional()
+  @CT.Type(() => Number)
+  start?: number;
+
+  @CV.Min(1)
+  @CV.Max(100)
+  @CV.IsInt()
+  @CV.IsOptional()
+  @CT.Type(() => Number)
+  offset?: number;
+
+  @CV.IsString()
+  @CV.IsOptional()
+  firstName?: string;
+
+  @CV.IsString()
+  @CV.IsOptional()
+  lastName?: string;
+
+  @CV.IsMobilePhone()
+  @CV.IsOptional()
+  mobileNumber?: string;
+
+  @CV.IsEmail()
+  @CV.IsOptional()
+  email?: string;
+
+  @CV.IsBoolean()
+  @CV.IsOptional()
+  isActive?: boolean;
+
+  toFindOptions(): TO.FindManyOptions<User> {
+    return {
+      skip: this.start,
+      take: this.offset,
+      where: {
+        firstName: this.firstName ? TO.Like(`%${this.firstName}%`) : undefined,
+        lastName: this.lastName ? TO.Like(`%${this.lastName}%`) : undefined,
+        email: this.email ? TO.Like(`%${this.email}%`) : undefined,
+        mobileNumber: this.mobileNumber
+          ? TO.Like(`%${this.mobileNumber}%`)
+          : undefined,
+        isActive: this.isActive,
+      },
     };
   }
 }

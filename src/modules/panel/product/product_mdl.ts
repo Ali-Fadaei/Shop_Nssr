@@ -157,12 +157,14 @@ export class ProductPUD {
 export class ProductCategoryQP {
   //
   @CV.Min(0)
+  @CV.IsInt()
   @CV.IsOptional()
   @CT.Type(() => Number)
   start?: number;
 
   @CV.Min(1)
   @CV.Max(100)
+  @CV.IsInt()
   @CV.IsOptional()
   @CT.Type(() => Number)
   offset?: number;
@@ -174,34 +176,40 @@ export class ProductCategoryQP {
 
   @CV.Min(0)
   @CV.Max(5)
+  @CV.IsNumber()
   @CV.IsOptional()
   @CT.Type(() => Number)
   maxRate?: number;
 
   @CV.Min(0)
   @CV.Max(5)
+  @CV.IsNumber()
   @CV.IsOptional()
   @CT.Type(() => Number)
   minRate?: number;
 
   @CV.IsPositive()
+  @CV.IsNumber()
   @CV.IsOptional()
   @CT.Type(() => Number)
   minPrice?: number;
 
   @CV.IsPositive()
+  @CV.IsNumber()
   @CV.IsOptional()
   @CT.Type(() => Number)
   maxPrice?: number;
 
   @CV.Min(1)
   @CV.Max(2)
+  @CV.IsInt()
   @CV.IsOptional()
   @CT.Type(() => Number)
   sort?: number;
 
   @CV.Min(1)
   @CV.Max(2)
+  @CV.IsInt()
   @CV.IsOptional()
   @CT.Type(() => Number)
   order?: number;

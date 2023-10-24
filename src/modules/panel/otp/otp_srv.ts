@@ -49,15 +49,13 @@ export class PanelOtpService {
     if (admin == null)
       throw new T.Exceptions.NotFound('شماره موبایل در سیستم وجود ندارد');
     const code = T.Crypto.generateOtpCode();
-    const otp = this.panelOtpRepo.create(
-      new M.PanelOtp({
-        id: T.Crypto.generateId(),
-        code: code,
-        admin: admin,
-        expireTime: 120,
-        isConfirmed: false,
-      }),
-    );
+    const otp = this.panelOtpRepo.create({
+      id: T.Crypto.generateId(),
+      code: code,
+      admin: admin,
+      expireTime: 120,
+      isConfirmed: false,
+    });
     await this.panelOtpRepo.save(otp);
     await this.mailTransporter.sendMail({
       from: 'X-Gate Security <security@ali-fadaei.ir>',

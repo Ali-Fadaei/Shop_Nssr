@@ -21,18 +21,18 @@ export class ProductController {
   }
 
   @N.Get(':id')
-  async getProductbyId(@N.Param('id') id: number) {
+  async getProduct(@N.Param('id') id: number) {
     return M.Product.toDto(await this.service.readOne(id));
   }
 
   @N.Post()
-  async postProduct(@N.Body() data: M.ProductPD) {
+  async createProduct(@N.Body() data: M.ProductPD) {
     const category = await this.categorySevice.readOne(data.categoryId);
     return M.Product.toDto(await this.service.create(data.toEntity(category)));
   }
 
   @N.Put(':id')
-  async putProduct(@N.Param('id') id: number, @N.Body() data: M.ProductPUD) {
+  async editProduct(@N.Param('id') id: number, @N.Body() data: M.ProductPUD) {
     let category = undefined;
     if (data.categoryId)
       category = await this.categorySevice.readOne(data.categoryId);

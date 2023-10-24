@@ -5,10 +5,6 @@ import { Admin } from '../admin/admin_mdl';
 @TO.Entity()
 export class PanelOtp {
   //
-  constructor(init: PanelOtp) {
-    Object.assign(this, init);
-  }
-
   @TO.PrimaryColumn({ type: 'uuid' })
   id: string;
 
