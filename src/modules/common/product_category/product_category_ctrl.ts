@@ -3,9 +3,7 @@ import * as M from './product_category_mdl';
 import G from 'src/guards/guards';
 import { ProductCategoryService } from './product_category_srv';
 
-@G.PanelRole(0)
-@G.UsePanelGuards()
-@N.Controller('panel/product-category')
+@N.Controller('/product-category')
 export class ProductCategoryController {
   //
   constructor(private service: ProductCategoryService) {}
@@ -21,11 +19,15 @@ export class ProductCategoryController {
     return M.ProductCategory.toDto(await this.service.readOne(id));
   }
 
+  @G.PanelRole(0)
+  @G.UsePanelGuards()
   @N.Post()
   async createCategory(@N.Body() data: M.ProductCategoryPD) {
     return M.ProductCategory.toDto(await this.service.create(data.toEntity()));
   }
 
+  @G.PanelRole(0)
+  @G.UsePanelGuards()
   @N.Put(':id')
   async editCategory(
     @N.Param('id') id: number,
@@ -36,6 +38,8 @@ export class ProductCategoryController {
     );
   }
 
+  @G.PanelRole(0)
+  @G.UsePanelGuards()
   @N.Delete()
   async deleteCategory(@N.Body() body: M.ProductCategoryDD) {
     return await this.service.delete(body.ids);

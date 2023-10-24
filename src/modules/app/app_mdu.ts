@@ -10,10 +10,10 @@ import { AdminModule } from '../panel/admin/admin_mdu';
 import { Admin } from '../panel/admin/admin_mdl';
 import { PanelOtp } from '../panel/otp/otp_mdl';
 import { PanelOtpModule } from '../panel/otp/otp_mdu';
-import { ProductModule } from '../panel/product/product_mdu';
-import { ProductCategory } from '../panel/product_category/product_category_mdl';
-import { ProductCategoryModule } from '../panel/product_category/product_cateogry_mdu';
-import { Product } from '../panel/product/product_mdl';
+import { ProductModule } from '../common/product/product_mdu';
+import { ProductCategory } from '../common/product_category/product_category_mdl';
+import { ProductCategoryModule } from '../common/product_category/product_cateogry_mdu';
+import { Product } from '../common/product/product_mdl';
 
 @N.Module({
   imports: [

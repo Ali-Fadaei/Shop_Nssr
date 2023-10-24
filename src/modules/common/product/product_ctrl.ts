@@ -4,9 +4,7 @@ import G from 'src/guards/guards';
 import { ProductService } from './product_srv';
 import { ProductCategoryService } from '../product_category/product_category_srv';
 
-@G.PanelRole(0)
-@G.UsePanelGuards()
-@N.Controller('panel/product')
+@N.Controller('/product')
 export class ProductController {
   //
   constructor(
@@ -25,12 +23,16 @@ export class ProductController {
     return M.Product.toDto(await this.service.readOne(id));
   }
 
+  @G.PanelRole(0)
+  @G.UsePanelGuards()
   @N.Post()
   async createProduct(@N.Body() data: M.ProductPD) {
     const category = await this.categorySevice.readOne(data.categoryId);
     return M.Product.toDto(await this.service.create(data.toEntity(category)));
   }
 
+  @G.PanelRole(0)
+  @G.UsePanelGuards()
   @N.Put(':id')
   async editProduct(@N.Param('id') id: number, @N.Body() data: M.ProductPUD) {
     let category = undefined;
@@ -41,6 +43,8 @@ export class ProductController {
     );
   }
 
+  @G.PanelRole(0)
+  @G.UsePanelGuards()
   @N.Delete()
   async deleteProduct(@N.Body() body: M.ProductDD) {
     return await this.service.delete(body.ids);
