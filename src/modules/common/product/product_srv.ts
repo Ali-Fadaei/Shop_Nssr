@@ -32,7 +32,10 @@ export class ProductService {
   }
 
   async readOne(id: number): Promise<Product> {
-    const product = await this.repo.findOne({ where: { id: id } });
+    const product = await this.repo.findOne({
+      relations: { category: true },
+      where: { id: id },
+    });
     if (product === null) throw new T.Exceptions.NotFound();
     return product;
   }
