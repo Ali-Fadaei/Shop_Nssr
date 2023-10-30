@@ -11,7 +11,7 @@ export class ProductCategory {
   title: string;
 
   @TO.Column({
-    type: 'int',
+    type: 'bigint',
     default: 0,
   })
   color: number;
