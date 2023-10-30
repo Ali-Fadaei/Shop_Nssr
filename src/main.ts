@@ -7,7 +7,11 @@ import { AppModule } from 'src/modules/app/app_mdu';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new T.Validators.ValidationPipe());
-  await app.listen(3000);
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  });
+  await app.listen(3000, '0.0.0.0');
 }
 
 bootstrap();
