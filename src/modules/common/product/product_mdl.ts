@@ -188,14 +188,14 @@ export class ProductCategoryQP {
   @CT.Type(() => Number)
   minRate?: number;
 
-  @CV.IsPositive()
-  @CV.IsNumber()
+  @CV.Min(0)
+  @CV.IsInt()
   @CV.IsOptional()
   @CT.Type(() => Number)
   minPrice?: number;
 
-  @CV.IsPositive()
-  @CV.IsNumber()
+  @CV.Min(0)
+  @CV.IsInt()
   @CV.IsOptional()
   @CT.Type(() => Number)
   maxPrice?: number;
@@ -214,11 +214,17 @@ export class ProductCategoryQP {
   @CT.Type(() => Number)
   order?: number;
 
-  @CV.IsInt()
-  @CV.IsPositive()
+  @CV.Min(0, { each: true })
+  @CV.IsInt({ each: true })
   @CV.IsOptional()
-  @CT.Type(() => Number)
-  categoryId: number;
+  @CT.Transform((params) =>
+    params.value
+      .replaceAll('[', '')
+      .replaceAll(']', '')
+      .split(',')
+      .map((e: string) => Number(e)),
+  )
+  categoryIds: number[];
 
   @CV.IsOptional()
   @CT.Type(() => Boolean)
@@ -243,7 +249,7 @@ export class ProductCategoryQP {
       order: order,
       relations: { category: true },
       where: {
-        category: { id: this.categoryId },
+        category: { id: TO.Any(this.categoryIds) },
         title: this.title ? TO.Like(`%${this.title}%`) : undefined,
         rating: TO.Between(this.minRate ?? 0, this.maxRate ?? 5),
         price: TO.Between(this.minPrice ?? 0, this.maxPrice ?? 900000000),
