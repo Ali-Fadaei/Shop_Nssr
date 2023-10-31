@@ -217,12 +217,9 @@ export class ProductCategoryQP {
   @CV.Min(0, { each: true })
   @CV.IsInt({ each: true })
   @CV.IsOptional()
+  @CT.Type(() => Number)
   @CT.Transform((params) =>
-    params.value
-      .replaceAll('[', '')
-      .replaceAll(']', '')
-      .split(',')
-      .map((e: string) => Number(e)),
+    typeof params.value == 'number' ? [params.value] : params.value,
   )
   categoryIds: number[];
 
@@ -249,8 +246,8 @@ export class ProductCategoryQP {
       order: order,
       relations: { category: true },
       where: {
-        category: { id: TO.Any(this.categoryIds) },
-        title: this.title ? TO.Like(`%${this.title}%`) : undefined,
+        category: { id: this.categoryIds ? TO.Any(this.categoryIds) : null },
+        title: this.title ? TO.ILike(`%${this.title}%`) : undefined,
         rating: TO.Between(this.minRate ?? 0, this.maxRate ?? 5),
         price: TO.Between(this.minPrice ?? 0, this.maxPrice ?? 900000000),
         isActive: this.isActive,
