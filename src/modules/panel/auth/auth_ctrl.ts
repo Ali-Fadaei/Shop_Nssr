@@ -1,5 +1,4 @@
 import * as N from '@nestjs/common';
-import R from 'src/routes';
 import G from 'src/guards/guards';
 import * as M from './auth_mdl';
 import { PanelAuthService } from './auth_srv';
