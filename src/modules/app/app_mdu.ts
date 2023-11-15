@@ -16,6 +16,8 @@ import { ProductCategoryModule } from '../common/product_category/product_cateog
 import { Product } from '../common/product/product_mdl';
 import { ClientOtp } from '../client/otp/otp_mdl';
 import { ClientOtpModule } from '../client/otp/otp_mdu';
+import { Favorite } from '../client/favorite/favorite_mdl';
+import { FavoriteModule } from '../client/favorite/favorite_mdu';
 
 @N.Module({
   imports: [
@@ -27,7 +29,15 @@ import { ClientOtpModule } from '../client/otp/otp_mdu';
       database: process.env.DataBaseName,
       username: process.env.DataBaseUser,
       password: process.env.DataBasePassword,
-      entities: [Admin, User, PanelOtp, ProductCategory, Product, ClientOtp],
+      entities: [
+        Admin,
+        User,
+        PanelOtp,
+        ProductCategory,
+        Product,
+        ClientOtp,
+        Favorite,
+      ],
       synchronize: true,
     }),
     ClientAuthModule,
@@ -38,6 +48,7 @@ import { ClientOtpModule } from '../client/otp/otp_mdu';
     ProductCategoryModule,
     ProductModule,
     ClientOtpModule,
+    FavoriteModule,
   ],
   providers: [
     {
