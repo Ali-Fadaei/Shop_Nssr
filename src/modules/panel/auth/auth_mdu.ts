@@ -11,7 +11,7 @@ import { AdminModule } from 'src/modules/panel/admin/admin_mdu';
     AdminModule,
     JwtModule.register({
       secret: T.Consts.jwtSecret,
-      signOptions: { expiresIn: 3600 },
+      signOptions: { expiresIn: process.env.PJwtEx },
     }),
   ],
   controllers: [PanelAuthController],

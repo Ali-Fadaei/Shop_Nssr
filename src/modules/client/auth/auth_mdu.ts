@@ -11,7 +11,7 @@ import { UserModule } from 'src/modules/panel/user/user_mdu';
     UserModule,
     JwtModule.register({
       secret: T.Consts.jwtSecret,
-      signOptions: { expiresIn: 3600 },
+      signOptions: { expiresIn: process.env.CJwtEx },
     }),
   ],
   controllers: [ClientAuthController],

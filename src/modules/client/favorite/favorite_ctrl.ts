@@ -35,7 +35,12 @@ export class FavoriteController {
   }
 
   @N.Delete()
-  async RemoveFavorite(@N.Body() data: M.FavoriteDD) {
-    return await this.service.delete(data.ids);
+  async RemoveFavorite(
+    @G.BearerTokenPayload() payload: ClientJwtPayload,
+    @N.Body() data: M.FavoriteDD,
+  ) {
+    return M.Favorite.toDto(
+      await this.service.deleteOne(payload.id, data.ids[0]),
+    );
   }
 }

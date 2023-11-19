@@ -11,7 +11,7 @@ export class CommonJwtGuard extends AuthGuard([
 ]) {
   //
   handleRequest(err: any, user: any, info: any, context: any, status: any) {
-    if (info) throw new T.Exceptions.UnAuthorized();
+    if (!user) throw new T.Exceptions.UnAuthorized();
     return super.handleRequest(err, user, info, context, status);
   }
 }

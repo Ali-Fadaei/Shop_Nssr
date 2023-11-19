@@ -50,9 +50,12 @@ export class FavoriteService {
     return await this.repo.delete(ids);
   }
 
-  async deleteOne(id: number): Promise<Favorite> {
-    const favorite = await this.readOne(id);
+  async deleteOne(userId: number, productId: number): Promise<Favorite> {
+    const favorite = await this.repo.findOne({
+      relations: { product: { category: true } },
+      where: { user: { id: userId }, product: { id: productId } },
+    });
     if (favorite === null) throw new T.Exceptions.NotFound();
-    return this.repo.remove(favorite);
+    return await this.repo.remove(favorite);
   }
 }

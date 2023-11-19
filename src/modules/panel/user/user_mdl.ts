@@ -43,26 +43,6 @@ export class User {
   @TO.UpdateDateColumn()
   edited?: Date;
 
-  @TO.AfterLoad()
-  afterLoadLog?() {
-    console.log('id:', this.id, 'loaded!');
-  }
-
-  @TO.AfterInsert()
-  afterInsertLog?() {
-    console.log('id:', this.id, 'inserted!');
-  }
-
-  @TO.AfterUpdate()
-  afterUpdateLog?() {
-    console.warn('id:', this.id, 'Updated!');
-  }
-
-  @TO.AfterRemove()
-  afterDeleteLog?() {
-    console.warn('id:', this.id, 'deleted!');
-  }
-
   static toDto(entity: User) {
     return {
       id: entity.id,

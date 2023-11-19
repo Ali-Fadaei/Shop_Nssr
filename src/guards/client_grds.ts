@@ -48,7 +48,7 @@ export class ClientJwtStrategy extends PassportStrategy(
 
   async validate(request: any, payload: ClientJwtPayload) {
     request.payload = payload;
-    return payload;
+    return true;
   }
 }
 
@@ -56,7 +56,7 @@ export class ClientJwtStrategy extends PassportStrategy(
 export class ClientJwtGuard extends AuthGuard(ClientJwtStrategyId) {
   //
   handleRequest(err: any, user: any, info: any, context: any, status: any) {
-    if (info) throw new T.Exceptions.UnAuthorized();
+    if (!user) throw new T.Exceptions.UnAuthorized();
     return super.handleRequest(err, user, info, context, status);
   }
 }
@@ -76,7 +76,7 @@ export class ClientRoleGuard implements N.CanActivate {
     if (requiredRole === undefined || null) {
       return true;
     } else {
-      const role = context.switchToHttp().getRequest().payload.role;
+      const role = payload.role;
       if (role <= requiredRole) return true;
       else throw new T.Exceptions.Forbidden();
     }

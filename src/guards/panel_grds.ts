@@ -48,7 +48,7 @@ export class PanelJwtStrategy extends PassportStrategy(
 
   async validate(request: any, payload: PanelJwtPayload) {
     request.payload = payload;
-    return payload;
+    return true;
   }
 }
 
@@ -56,7 +56,7 @@ export class PanelJwtStrategy extends PassportStrategy(
 export class PanelJwtGuard extends AuthGuard(PanelJwtStrategyId) {
   //
   handleRequest(err: any, user: any, info: any, context: any, status: any) {
-    if (info) throw new T.Exceptions.UnAuthorized();
+    if (!user) throw new T.Exceptions.UnAuthorized();
     return super.handleRequest(err, user, info, context, status);
   }
 }
