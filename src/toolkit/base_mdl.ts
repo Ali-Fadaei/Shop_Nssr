@@ -10,8 +10,8 @@ export class Response<T, K> {
 
   data: T;
 
-  messages: {
+  message: {
     general: string | null;
-    validations: K;
+    validation: K;
   } | null;
 }
