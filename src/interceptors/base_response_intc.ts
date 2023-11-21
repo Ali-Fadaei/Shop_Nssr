@@ -20,8 +20,8 @@ export class BaseResponseInterceptor implements N.NestInterceptor {
           result: resStatusCode === 200 || resStatusCode === 201,
           status: resStatusCode,
           data: dataIsMessage ? null : data,
-          messages: dataIsMessage
-            ? { general: data, validations: undefined }
+          message: dataIsMessage
+            ? { general: data, validation: undefined }
             : null,
         });
       }),

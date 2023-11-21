@@ -8,9 +8,9 @@ export class NotFound extends N.NotFoundException {
         result: false,
         status: 404,
         data: null,
-        messages: {
+        message: {
           general: message ?? ' محتوای مورد نظر یافت نشد',
-          validations: undefined,
+          validation: undefined,
         },
       }),
     );
@@ -24,11 +24,11 @@ export class BadRequest extends N.BadRequestException {
         result: false,
         status: 400,
         data: null,
-        messages: {
+        message: {
           general:
             info?.message ??
             'درخواست نامعتبر!\nلطفاً درخواست را اصلاح و دوباره تلاش کنید',
-          validations: info?.validations ?? undefined,
+          validation: info?.validations ?? undefined,
         },
       }),
     );
@@ -42,10 +42,10 @@ export class UnAuthorized extends N.UnauthorizedException {
         result: false,
         status: 401,
         data: null,
-        messages: {
+        message: {
           general:
             message ?? 'دسترسی غیرمجاز!\nبرای دسترسی، باید احراز هویت کنید.',
-          validations: undefined,
+          validation: undefined,
         },
       }),
     );
@@ -59,10 +59,10 @@ export class Forbidden extends N.ForbiddenException {
         result: false,
         status: 403,
         data: null,
-        messages: {
+        message: {
           general:
             message ?? 'دسترسی ممنوع!\nشما اجازه دسترسی به این قسمت را ندارید',
-          validations: undefined,
+          validation: undefined,
         },
       }),
     );
