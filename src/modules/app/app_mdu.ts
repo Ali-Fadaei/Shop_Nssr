@@ -18,6 +18,8 @@ import { ClientOtp } from '../client/otp/otp_mdl';
 import { ClientOtpModule } from '../client/otp/otp_mdu';
 import { Favorite } from '../client/favorite/favorite_mdl';
 import { FavoriteModule } from '../client/favorite/favorite_mdu';
+import { ShopItem } from '../client/shop_item/shop_item_mdl';
+import { ShopItemModule } from '../client/shop_item/shop_item_mdu';
 
 @N.Module({
   imports: [
@@ -37,6 +39,7 @@ import { FavoriteModule } from '../client/favorite/favorite_mdu';
         Product,
         ClientOtp,
         Favorite,
+        ShopItem,
       ],
       synchronize: true,
     }),
@@ -49,6 +52,7 @@ import { FavoriteModule } from '../client/favorite/favorite_mdu';
     ProductModule,
     ClientOtpModule,
     FavoriteModule,
+    ShopItemModule,
   ],
   providers: [
     {

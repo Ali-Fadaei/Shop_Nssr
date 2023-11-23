@@ -30,27 +30,37 @@ export class FavoriteService {
     return await this.repo.save(this.repo.create(entity));
   }
 
-  async read(userId: number): Promise<Favorite[]> {
-    return await this.repo.find({
-      relations: { product: { category: true } },
-      where: { user: { id: userId } },
-    });
+  async read(findOptions: TO.FindManyOptions<Favorite>): Promise<Favorite[]> {
+    return await this.repo.find(findOptions);
   }
 
   async readOne(id: number): Promise<Favorite> {
-    const product = await this.repo.findOne({
+    const favorite = await this.repo.findOne({
       relations: { user: true, product: true },
       where: { id: id },
     });
-    if (product === null) throw new T.Exceptions.NotFound();
-    return product;
+    if (favorite === null) throw new T.Exceptions.NotFound();
+    return favorite;
   }
 
   async delete(ids: number[]) {
     return await this.repo.delete(ids);
   }
 
-  async deleteOne(userId: number, productId: number): Promise<Favorite> {
+  async deleteOne(id: number): Promise<Favorite> {
+    const favorite = await this.readOne(id);
+    if (favorite === null) throw new T.Exceptions.NotFound();
+    return this.repo.remove(favorite);
+  }
+
+  async readByUserId(userId: number): Promise<Favorite[]> {
+    return await this.repo.find({
+      relations: { product: { category: true } },
+      where: { user: { id: userId } },
+    });
+  }
+
+  async remove(userId: number, productId: number): Promise<Favorite> {
     const favorite = await this.repo.findOne({
       relations: { product: { category: true } },
       where: { user: { id: userId }, product: { id: productId } },
