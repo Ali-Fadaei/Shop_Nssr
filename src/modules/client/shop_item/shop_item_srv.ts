@@ -85,8 +85,9 @@ export class ShopItemService {
       where: { user: { id: userId }, product: { id: productId } },
     });
     if (shopItem === null) throw new T.Exceptions.NotFound();
-    if (shopItem.count <= 0) {
-      return await this.deleteOne(shopItem.id);
+    if (shopItem.count <= 1) {
+      await this.deleteOne(shopItem.id);
+      return shopItem;
     }
     shopItem.count = shopItem.count - 1;
     return await this.repo.save(shopItem);
