@@ -55,6 +55,7 @@ export class ShopItemService {
     return await this.repo.find({
       relations: { product: { category: true } },
       where: { user: { id: userId } },
+      order: { created: 'asc' },
     });
   }
 
