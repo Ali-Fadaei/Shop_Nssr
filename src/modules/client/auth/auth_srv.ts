@@ -70,4 +70,12 @@ export class ClientAuthService {
     await this.userService.update({ id: payload.id, token: null! });
     return;
   }
+
+  async readProfile(userId: number) {
+    return await this.userService.readOne(userId);
+  }
+
+  async upateProfile(changes: Partial<User>) {
+    return await this.userService.update(changes);
+  }
 }

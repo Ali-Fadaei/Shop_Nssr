@@ -5,6 +5,8 @@ import T from 'src/toolkit/toolkit';
 import { ShopItem } from './shop_item_mdl';
 import { User } from 'src/modules/panel/user/user_mdl';
 import { Product } from 'src/modules/common/product/product_mdl';
+import { UserService } from 'src/modules/panel/user/user_srv';
+import { ProductService } from 'src/modules/common/product/product_srv';
 
 @N.Injectable()
 export class ShopItemService {
@@ -12,6 +14,8 @@ export class ShopItemService {
   constructor(
     @NTO.InjectRepository(ShopItem)
     readonly repo: TO.Repository<ShopItem>,
+    private userService: UserService,
+    private productService: ProductService,
   ) {}
 
   async exist(data: TO.DeepPartial<ShopItem>): Promise<boolean> {
@@ -59,12 +63,14 @@ export class ShopItemService {
     });
   }
 
-  async incCount(user: User, product: Product): Promise<ShopItem> {
+  async incCount(userId: number, productId: number): Promise<ShopItem> {
     const shopItem = await this.repo.findOne({
       relations: { product: { category: true } },
-      where: { user: { id: user.id }, product: { id: product.id } },
+      where: { user: { id: userId }, product: { id: productId } },
     });
     if (shopItem === null) {
+      const user = await this.userService.readOne(userId);
+      const product = await this.productService.readOne(productId);
       return await this.create({
         id: -1,
         user: user,

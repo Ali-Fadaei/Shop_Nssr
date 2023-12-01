@@ -3,6 +3,8 @@ import * as NTO from '@nestjs/typeorm';
 import * as TO from 'typeorm';
 import T from 'src/toolkit/toolkit';
 import { Favorite } from './favorite_mdl';
+import { UserService } from 'src/modules/panel/user/user_srv';
+import { ProductService } from 'src/modules/common/product/product_srv';
 
 @N.Injectable()
 export class FavoriteService {
@@ -10,24 +12,31 @@ export class FavoriteService {
   constructor(
     @NTO.InjectRepository(Favorite)
     readonly repo: TO.Repository<Favorite>,
+    private userService: UserService,
+    private productService: ProductService,
   ) {}
 
-  async exist(data: Partial<Favorite>): Promise<boolean> {
+  async exist(
+    id?: number,
+    userId?: number,
+    productId?: number,
+  ): Promise<boolean> {
     return await this.repo.exist({
       relations: { user: true, product: true },
-      where: [
-        { id: data.id },
-        { user: { id: data.user.id }, product: { id: data.product.id } },
-      ],
+      where: [{ id: id }, { user: { id: userId }, product: { id: productId } }],
     });
   }
 
-  async create(entity: Favorite): Promise<Favorite> {
-    if (await this.exist(entity))
+  async create(userId: number, productId: number): Promise<Favorite> {
+    if (await this.exist(null, userId, productId))
       throw new T.Exceptions.BadRequest({
         message: 'این علاقه‌مندی تکراری است',
       });
-    return await this.repo.save(this.repo.create(entity));
+    const user = await this.userService.readOne(userId);
+    const product = await this.productService.readOne(productId);
+    return await this.repo.save(
+      this.repo.create({ id: -1, user: user, product: product }),
+    );
   }
 
   async read(findOptions: TO.FindManyOptions<Favorite>): Promise<Favorite[]> {

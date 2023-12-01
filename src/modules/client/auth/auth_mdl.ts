@@ -22,3 +22,36 @@ export class SignInPD {
   @CV.IsString()
   password: string;
 }
+
+export class ProfileUpdatePUD {
+  //
+  @CV.IsString()
+  @CV.IsOptional()
+  firstName: string;
+
+  @CV.IsString()
+  @CV.IsOptional()
+  lastName: string;
+
+  @CV.IsEmail()
+  @CV.IsOptional()
+  email?: string;
+
+  @CV.IsString()
+  @CV.MaxLength(100)
+  @CV.IsOptional()
+  address: string;
+
+  toEntity(id: number): Partial<M.User> {
+    return {
+      id: id,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
+      address: this.address,
+      isRegistered: true,
+      isActive: true,
+      isUsed: false,
+    };
+  }
+}

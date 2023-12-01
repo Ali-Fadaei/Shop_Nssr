@@ -3,18 +3,12 @@ import * as M from './favorite_mdl';
 import G from 'src/guards/guards';
 import { FavoriteService } from './favorite_srv';
 import { ClientJwtPayload } from 'src/guards/client_grds';
-import { UserService } from 'src/modules/panel/user/user_srv';
-import { ProductService } from 'src/modules/common/product/product_srv';
 
 @G.UseClientGuards()
 @N.Controller('/client/favorite')
 export class FavoriteController {
   //
-  constructor(
-    private service: FavoriteService,
-    private userService: UserService,
-    private productService: ProductService,
-  ) {}
+  constructor(private service: FavoriteService) {}
 
   @N.Get()
   async getFavorites(@G.BearerTokenPayload() payload: ClientJwtPayload) {
@@ -27,10 +21,8 @@ export class FavoriteController {
     @G.BearerTokenPayload() payload: ClientJwtPayload,
     @N.Body() data: M.FavoritePD,
   ) {
-    const user = await this.userService.readOne(payload.id);
-    const product = await this.productService.readOne(data.productId);
     return M.Favorite.toDto(
-      await this.service.create(data.toEntity(user, product)),
+      await this.service.create(payload.id, data.productId),
     );
   }
 

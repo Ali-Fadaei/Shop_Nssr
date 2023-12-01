@@ -35,6 +35,13 @@ export class UserService {
   async update(changes: Partial<User>): Promise<User> {
     const user = await this.readOne(changes.id!);
     if (user === null) throw new T.Exceptions.NotFound();
+    const emailExist = await this.repo.exist({
+      where: { email: changes.email },
+    });
+    if (emailExist)
+      throw new T.Exceptions.BadRequest({
+        validations: { email: 'ایمیل قبلا استفاده شده' },
+      });
     Object.assign(user, this.repo.create(changes));
     return await this.repo.save(user);
   }

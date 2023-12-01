@@ -30,14 +30,6 @@ export class FavoritePD {
   //
   @CV.IsInt()
   productId: number;
-
-  toEntity(user: User, product: Product): Favorite {
-    return {
-      id: -1,
-      user: user,
-      product: product,
-    };
-  }
 }
 
 export class FavoriteDD {

@@ -38,4 +38,23 @@ export class ClientAuthController {
   async whoami(@G.BearerTokenPayload() payload: ClientJwtPayload) {
     return payload;
   }
+
+  @G.UseClientGuards()
+  @N.Get('/profile')
+  async getProfile(@G.BearerTokenPayload() payload: ClientJwtPayload) {
+    return User.toTokenDto(
+      await this.clientAuthService.readProfile(payload.id),
+    );
+  }
+
+  @G.UseClientGuards()
+  @N.Put('/profile')
+  async updateProfile(
+    @G.BearerTokenPayload() payload: ClientJwtPayload,
+    @N.Body() data: M.ProfileUpdatePUD,
+  ) {
+    return User.toTokenDto(
+      await this.clientAuthService.upateProfile(data.toEntity(payload.id)),
+    );
+  }
 }

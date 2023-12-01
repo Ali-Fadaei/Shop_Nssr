@@ -38,12 +38,4 @@ export class ShopItemPD {
   //
   @CV.IsInt()
   productId: number;
-
-  toEntity(user: User, product: Product): TO.DeepPartial<ShopItem> {
-    return {
-      id: -1,
-      user: user,
-      product: product,
-    };
-  }
 }
